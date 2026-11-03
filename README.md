@@ -1,5 +1,13 @@
 # AgentSearch — Multi-Agent Search Engine
 
+[![CI](https://github.com/sairajkashid-prog/agentsearch-multi-agent-search/actions/workflows/ci.yml/badge.svg)](https://github.com/sairajkashid-prog/agentsearch-multi-agent-search/actions/workflows/ci.yml)
+![Python](https://img.shields.io/badge/python-3.10%2B-blue)
+![License](https://img.shields.io/badge/license-MIT-green)
+![No API key](https://img.shields.io/badge/API%20key-not%20required-brightgreen)
+
+**Live demo:** https://agentsearch-sairaj-kashid.vercel.app
+**Deployment guide:** [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md)
+
 A free, English-language, multi-agent search engine with a ChatGPT-style chat interface.
 
 Ask a question and six agents collaborate to produce a cited answer:
