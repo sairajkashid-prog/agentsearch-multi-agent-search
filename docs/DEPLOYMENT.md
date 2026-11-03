@@ -5,7 +5,7 @@ This project runs in two modes:
 | Mode | Where | Streaming | History |
 |---|---|---|---|
 | **Local / Docker** | Your machine, any VPS | ✅ Live SSE agent activity | ✅ Persistent SQLite |
-| **Vercel (serverless)** | `*.vercel.app` | ⚠️ SSE when supported, automatic JSON fallback | ⚠️ Ephemeral (`/tmp`) |
+| **Vercel (serverless)** | https://agentsearch-red.vercel.app | ✅ SSE verified working (JSON fallback if a host buffers it) | ⚠️ Ephemeral (`/tmp`) |
 
 ---
 
@@ -53,6 +53,24 @@ Browser ──► /                      → public/index.html   (CDN, static)
         ──► /api/health            → api/index.py
         ──► /api/history           → api/index.py
 ```
+
+### Verified deployment
+
+The live deployment was tested end-to-end after release:
+
+| Check | Result |
+|---|---|
+| `GET /` | 200 — chat UI served from CDN |
+| `GET /static/styles.css`, `/static/app.js` | 200 |
+| `GET /api/health` | 200 — `free-no-key`, 3 providers |
+| `GET /api/search` (SSE) | 200 — all 6 agents streamed, result in ~1.9 s |
+| `POST /api/search` (JSON) | 200 — confidence 0.92, 6 sources, ~1.4 s |
+| `GET /api/history` | 200 — runs persisted within the warm instance |
+
+> **Note on URLs:** Vercel's team-scoped alias
+> (`agentsearch-sairaj-kashid.vercel.app`) is behind Vercel Authentication by
+> default. The public production URL is **https://agentsearch-red.vercel.app** —
+> use that one when sharing.
 
 ### Deploy from the dashboard
 

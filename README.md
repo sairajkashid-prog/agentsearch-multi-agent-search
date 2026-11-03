@@ -5,7 +5,7 @@
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![No API key](https://img.shields.io/badge/API%20key-not%20required-brightgreen)
 
-**Live demo:** https://agentsearch-sairaj-kashid.vercel.app
+**Live demo:** https://agentsearch-red.vercel.app
 **Deployment guide:** [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md)
 
 A free, English-language, multi-agent search engine with a ChatGPT-style chat interface.
