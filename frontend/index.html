@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AgentSearch — Multi-Agent Search Engine</title>
+  <link rel="stylesheet" href="/static/styles.css" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='%2310a37f'/%3E%3Cpath d='M10 17l4 4 8-10' stroke='white' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
+</head>
+<body>
+  <div class="app">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-top">
+        <button class="new-chat-btn" id="newChatBtn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+          New chat
+        </button>
+      </div>
+      <div class="history-section">
+        <div class="history-label">Recent searches</div>
+        <div class="history-list" id="historyList">
+          <div class="history-empty">No searches yet.</div>
+        </div>
+      </div>
+      <div class="sidebar-footer">
+        <div class="mode-badge" id="modeBadge">Free mode · no API key</div>
+        <div class="sidebar-actions">
+          <button class="sidebar-link" id="themeToggle" title="Toggle theme">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8z"/></svg>
+            Theme
+          </button>
+          <a class="sidebar-link" href="/docs" target="_blank" rel="noopener">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>
+            API docs
+          </a>
+          <button class="sidebar-link danger" id="clearHistory">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg>
+            Clear history
+          </button>
+        </div>
+      </div>
+    </aside>
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Main -->
+    <main class="main">
+      <header class="topbar">
+        <button class="icon-btn menu-btn" id="menuBtn" aria-label="Open sidebar">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+        </button>
+        <div class="model-pill">
+          <span class="model-dot"></span>
+          <span class="model-name">AgentSearch</span>
+          <span class="model-sub">6-agent research</span>
+        </div>
+        <select id="depthSelect" class="depth-select" title="Search depth">
+          <option value="quick">Quick</option>
+          <option value="standard" selected>Standard</option>
+          <option value="deep">Deep</option>
+        </select>
+      </header>
+
+      <div class="chat-scroll" id="chatScroll">
+        <div class="chat-inner">
+          <!-- Welcome -->
+          <section class="welcome" id="welcome">
+            <div class="welcome-logo">
+              <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg>
+            </div>
+            <h1>How can I help you research today?</h1>
+            <p class="welcome-sub">Ask a question. Six agents will plan, search, read, rank, write, and audit the answer.</p>
+            <div class="suggestions">
+              <button class="suggestion" data-q="What is quantum computing?">
+                <span class="s-title">Explain a concept</span>
+                <span class="s-sub">What is quantum computing?</span>
+              </button>
+              <button class="suggestion" data-q="Python vs JavaScript for beginners">
+                <span class="s-title">Compare options</span>
+                <span class="s-sub">Python vs JavaScript for beginners</span>
+              </button>
+              <button class="suggestion" data-q="How to learn machine learning step by step">
+                <span class="s-title">Get a how-to guide</span>
+                <span class="s-sub">How to learn machine learning</span>
+              </button>
+              <button class="suggestion" data-q="Latest news about artificial intelligence">
+                <span class="s-title">Catch up on news</span>
+                <span class="s-sub">Latest AI news</span>
+              </button>
+            </div>
+          </section>
+
+          <!-- Messages -->
+          <section class="messages" id="messages"></section>
+        </div>
+      </div>
+
+      <!-- Composer -->
+      <div class="composer-wrap">
+        <form class="composer" id="composer">
+          <textarea id="queryInput" rows="1" maxlength="300" placeholder="Message AgentSearch…" autocomplete="off"></textarea>
+          <button type="button" class="stop-btn hidden" id="stopBtn" title="Stop generating">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="6" width="12" height="12" rx="2"/></svg>
+          </button>
+          <button type="submit" class="send-btn" id="sendBtn" title="Send" disabled>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+          </button>
+        </form>
+        <div class="composer-note">AgentSearch can make mistakes. Verify important information from the cited sources.</div>
+      </div>
+    </main>
+  </div>
+  <script src="/static/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,7 @@
+# Serverless runtime dependencies (Vercel).
+# Kept separate from requirements.txt so the cloud function stays small:
+# no uvicorn/uvloop (Vercel supplies the server) and no test tooling.
+fastapi>=0.115.0
+httpx>=0.27.0
+beautifulsoup4>=4.12.0
+python-dotenv>=1.0.0

@@ -1,0 +1,17 @@
+services:
+  agentsearch:
+    build: .
+    container_name: agentsearch
+    ports:
+      - "8000:8000"
+    environment:
+      - TAVILY_API_KEY=${TAVILY_API_KEY:-}
+      - MAX_SEARCH_RESULTS=10
+      - MAX_PAGES_TO_READ=6
+      - ENABLE_CRITIC_RETRY=true
+    volumes:
+      - agentsearch-data:/app/data
+    restart: unless-stopped
+
+volumes:
+  agentsearch-data:
