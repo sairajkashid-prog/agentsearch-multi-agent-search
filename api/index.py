@@ -42,7 +42,10 @@ class _OriginalPathMiddleware:
                     if not raw:
                         continue
                     candidate = raw.decode("latin-1").split("?")[0]
-                    if candidate.startswith("/api"):
+                    # Accept the pre-rewrite path for API routes and the
+                    # OpenAPI documentation endpoints, which are also rewritten
+                    # onto this function.
+                    if candidate.startswith("/api/") or candidate in ("/docs", "/redoc", "/openapi.json"):
                         scope = dict(scope)
                         scope["path"] = candidate
                         scope["raw_path"] = candidate.encode("latin-1")
